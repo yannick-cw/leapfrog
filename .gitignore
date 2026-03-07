@@ -1,0 +1,5 @@
+/target
+.env
+.token
+.DS_Store
+captured_data
