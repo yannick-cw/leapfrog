@@ -1,5 +1,4 @@
 use std::{
-    convert::Infallible,
     str::FromStr,
     time::{SystemTime, UNIX_EPOCH},
 };
@@ -105,8 +104,15 @@ enum UserCommand {
 #[derive(Debug, Clone)]
 struct Token(String);
 impl FromStr for Token {
-    type Err = Infallible;
+    type Err = String;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
+        if let Some(pos) = s.bytes().position(|b| !b.is_ascii()) {
+            return Err(format!(
+                "access token contains non-ASCII byte at position {pos}. \
+                 This usually means copy-paste introduced invisible characters. \
+                 Try copying the token again from DevTools."
+            ));
+        }
         Ok(Token(s.to_string()))
     }
 }
@@ -115,8 +121,15 @@ impl FromStr for Token {
 struct RefreshToken(String);
 
 impl FromStr for RefreshToken {
-    type Err = Infallible;
+    type Err = String;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
+        if let Some(pos) = s.bytes().position(|b| !b.is_ascii()) {
+            return Err(format!(
+                "refresh token contains non-ASCII byte at position {pos}. \
+                 This usually means copy-paste introduced invisible characters. \
+                 Try copying the token again from DevTools."
+            ));
+        }
         Ok(RefreshToken(s.to_string()))
     }
 }
