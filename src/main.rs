@@ -28,11 +28,11 @@ struct Args {
 #[derive(Debug, Subcommand)]
 enum Command {
     /// One-time setup: store tokens from a dedicated browser profile.
-    #[command(long_about = "One-time setup: store tokens from a DEDICATED browser profile.\n\nWARNING: You MUST use a separate browser profile (not your daily one)!\nIf you open Leapsome in the same browser profile, the CLI tokens are\ninvalidated immediately and you have to re-login.\n\nSteps:\n  1) Create a new browser profile (e.g. Firefox/Chrome profile) solely for CLI tokens\n  2) Log into Leapsome in that profile\n  3) Open DevTools > Network, find any API request\n  4) Copy the Authorization header value (without 'Bearer ')\n  5) Copy the l_refresh_token cookie value (from the Cookie header)\n  6) Run: leapfrog login <access_token> <refresh_token>\n  7) Never use Leapsome in that browser profile again\n\nThe CLI auto-refreshes tokens for up to 31 days after initial login.")]
+    #[command(long_about = "One-time setup: store tokens from a DEDICATED browser profile.\n\nWARNING: You MUST use a separate browser profile (not your daily one)!\nIf you open Leapsome in the same browser profile, the CLI tokens are\ninvalidated immediately and you have to re-login.\n\nSteps:\n  1) Create a new browser profile (e.g. Firefox/Chrome profile) solely for CLI tokens\n  2) Log into Leapsome in that profile\n  3) Open DevTools > Network, find any API request\n  4) Copy the Authorization header value (without 'Bearer ')\n  5) Copy the l_refresh_token cookie value from the Cookie REQUEST HEADER\n     (not Application > Cookies). The value must start with s%3A.\n     If yours starts with s: you grabbed the decoded version;\n     replace s: with s%3A before pasting.\n  6) Run: leapfrog login <access_token> <refresh_token>\n  7) Never use Leapsome in that browser profile again\n\nThe CLI auto-refreshes tokens for up to 31 days after initial login.")]
     Login {
         /// The Bearer token from the Authorization header
         token: Token,
-        /// The l_refresh_token cookie value
+        /// The l_refresh_token cookie value (must start with s%3A, not s:)
         refresh_token: RefreshToken,
     },
     /// Manage your Leapsome goals/priorities

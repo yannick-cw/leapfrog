@@ -17,7 +17,8 @@ One-time: grab tokens from a **dedicated browser profile** (don't use your daily
 1. Open Leapsome in the dedicated profile
 2. DevTools > Network > find any API request
 3. Copy the `Authorization` header value (without `Bearer `)
-4. Copy the `l_refresh_token` cookie value
+4. Copy the `l_refresh_token` cookie value from the **Cookie request header** (not the Application > Cookies panel).
+   The value must start with `s%3A`. If yours starts with `s:` you grabbed the decoded version and need to replace `s:` with `s%3A`.
 5. Run:
 
 ```bash
